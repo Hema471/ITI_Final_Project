@@ -1,0 +1,49 @@
+/* FavoritesPage Pagination Styels */
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .pagination {
+    display: flex;
+    list-style: none;
+   
+    /* margin: 2000px; */
+  }
+  .pagination a {
+    text-decoration: none;
+    color: #333;
+    padding: 5px 10px;
+    border: 1px solid #fd0000;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .pagination a:hover {
+    background-color: #0275d8;
+  }
+  
+  .active a {
+    background-color: #d9534f;
+    color: #fff;
+
+  }
+  
+  .active a:hover {
+    background-color: #d9534f;
+  }
+  
+  /* ////////////////// */
+/* Cards Pagination Styels */
+
+.custom-pagination {
+  display: flex;
+  justify-content: center;
+  margin: 5rem 0; 
+}
+
+.custom-pagination button:hover {
+  background-color: #0275d8;
+}

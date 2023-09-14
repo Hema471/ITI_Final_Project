@@ -1,0 +1,28 @@
+.scroll-up-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1;
+  transition: opacity 0.3s;
+  zoom: 1.2;
+}
+
+.scroll-up-button button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.scroll-up-button.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scroll-up-button.visible {
+  opacity: 1;
+  pointer-events: auto;
+}

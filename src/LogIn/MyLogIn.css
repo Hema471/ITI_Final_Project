@@ -1,0 +1,45 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.MyLogIn body{
+    background:rgb(219, 226, 226) ;
+}
+.MyLogIn .row{
+    background: white;
+    border-radius:30px ;
+    box-shadow: 12px 12px 12px 12px;
+}
+.MyLogIn img{
+    border-top-left-radius:30px ;
+    width: 500px;
+    height: auto;
+    object-fit: cover;
+    
+    border-bottom-left-radius:30px ;
+    padding-left: -20;
+    
+    
+}
+.MyLogIn .btn1{
+    border: none;
+    outline: none;
+    height: 50px;
+    width: 100%;
+    background-color: #5352ed;
+    border:2.5px solid #2f3542;
+    color: white;
+    border-radius: 4px;
+}
+.MyLogIn .btn1:hover{
+    background-color: white;
+    border: 2px solid;
+    color: black;
+}
+.MyLogIn a{
+    text-decoration: none;
+}
+.MyLogIn h1{
+color: #2f3542;
+}

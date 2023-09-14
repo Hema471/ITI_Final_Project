@@ -1,0 +1,35 @@
+.xyz{  
+    border-radius: 10px;
+    border: 2px solid rgba(27,29,47,255) ; 
+    margin-bottom: 3px;  
+}
+.container_card{
+    background: linear-gradient(90deg,hsl(120, 10%, 4%),hsl(193, 32%, 35%));
+    padding: 70px;
+    border-radius: 30px;
+    margin: 30px;
+}
+.main_card{
+  
+   
+}
+#nav_main{
+    background-color: rgb(141, 106, 71);
+    padding: 300px;
+}
+.head{
+    background: linear-gradient(90deg,hsl(0, 0%, 98%),hsl(182, 49%, 73%));
+}
+.container_card_fav{
+    background: linear-gradient(90deg,hsl(120, 10%, 4%),hsl(193, 32%, 35%));
+    padding: 70px;
+    border-radius: 30px;
+}
+.fav_word{
+    margin-left: 110px;
+}
+.notfound{
+    justify-content: center;
+    text-align: center;
+    
+}
