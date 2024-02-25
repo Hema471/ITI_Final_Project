@@ -1,3 +1,4 @@
+// ScrollUpButton.js
 import React, { useState, useEffect } from "react";
 import "./ScrollUp.css";
 
@@ -28,10 +29,15 @@ const ScrollUpButton = () => {
   }, []);
 
   return (
-    <div className={`scroll-up-button ${isVisible ? "visible" : "hidden"}`}>
-      <button onClick={scrollToTop}>
-        <p style={{ margin: "0px" }}>🢁</p>
-      </button>
+    <div className="arrow-up">
+      <div
+        className={`scroll-up-button ${isVisible ? "visible" : "hidden"}`}
+        onClick={scrollToTop}
+      >
+        <button>
+          <i className="fas fa-arrow-up"></i>
+        </button>
+      </div>
     </div>
   );
 };
