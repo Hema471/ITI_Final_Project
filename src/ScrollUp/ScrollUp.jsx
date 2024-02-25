@@ -1,47 +1,39 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from "react";
 import "./ScrollUp.css";
-class ScrollUpButton extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isVisible: false,
-    };
-  }
 
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
-  }
+const ScrollUpButton = () => {
+  const [isVisible, setIsVisible] = useState(false);
 
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
-  }
-
-  handleScroll = () => {
+  const handleScroll = () => {
     if (window.pageYOffset > 100) {
-      this.setState({ isVisible: true });
+      setIsVisible(true);
     } else {
-      this.setState({ isVisible: false });
+      setIsVisible(false);
     }
   };
 
-  scrollToTop = () => {
+  const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   };
 
-  render() {
-    const { isVisible } = this.state;
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
 
-    return (
-      <div className={`scroll-up-button ${isVisible ? 'visible' : 'hidden'}`}>
-        <button onClick={this.scrollToTop}>
-        🢁
-        </button>
-      </div>
-    );
-  }
-}
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  return (
+    <div className={`scroll-up-button ${isVisible ? "visible" : "hidden"}`}>
+      <button onClick={scrollToTop}>
+        <p style={{ margin: "0px" }}>🢁</p>
+      </button>
+    </div>
+  );
+};
 
 export default ScrollUpButton;

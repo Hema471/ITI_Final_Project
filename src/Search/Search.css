@@ -25,3 +25,17 @@
   text-align: center; 
   margin-top: 20px; 
 }
+
+.voice-button {
+  background-color: #007bff; /* Change the background color */
+  color: #fff; /* Change the text color */
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px; /* Adjust margin as needed */
+}
+
+.voice-button:hover {
+  background-color: #0056b3; /* Change the background color on hover */
+}
