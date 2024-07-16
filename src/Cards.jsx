@@ -7,6 +7,7 @@ import "./Pagination.css";
 
 const Cards = () => {
   const apikey = "7a1c19ea3c361a4d3cc53eb70ef8298c";
+  const genreId = 16; // ID for animation
   const [moviesDetails, setMoviesDetails] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -18,7 +19,7 @@ const Cards = () => {
   const getMoviesByPage = async (page) => {
     try {
       const response = await Axios.get(
-        `https://api.themoviedb.org/3/movie/popular?api_key=${apikey}&page=${page}`
+        `https://api.themoviedb.org/3/discover/movie?api_key=${apikey}&page=${page}&with_genres=${genreId}`
       );
       const { results, total_pages } = response.data;
 

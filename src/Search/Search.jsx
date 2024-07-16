@@ -6,6 +6,7 @@ import Pagination from "react-bootstrap/Pagination";
 import "../Pagination.css";
 import "./Search.css";
 const apiKey = "7a1c19ea3c361a4d3cc53eb70ef8298c";
+const genreId = 16; // ID for animation
 
 const MovieSearch = () => {
   const [query, setQuery] = useState("");
@@ -73,7 +74,7 @@ const MovieSearch = () => {
   };
 
   const fetchMovies = (newQuery) => {
-    const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${newQuery}&page=${currentPage}`;
+    const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${newQuery}&page=${currentPage}&with_genres=${genreId}`;
 
     axios
       .get(apiUrl)

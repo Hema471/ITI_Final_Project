@@ -59,13 +59,14 @@ const MovieDetail = () => {
               <span className="fw-bold">Popularity: </span>
               {movieDetails.popularity}
             </p>
-            <div className="youtube-container">
+            {/* Animation Trailer */}
+            {/* <div className="youtube-container">
               <YouTube
                 videoId={videoId}
                 opts={videoOptions}
                 className="youtube-iframe"
               />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
