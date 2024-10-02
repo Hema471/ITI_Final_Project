@@ -43,3 +43,9 @@
 .MyLogIn h1{
 color: #2f3542;
 }
+
+@media (max-width: 999px) {
+    .MyLogIn img{
+        display:none
+    }
+}

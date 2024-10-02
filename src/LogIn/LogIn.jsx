@@ -42,7 +42,7 @@ function LogIn({ users }) {
       }}
       className="MyLogIn"
     >
-      <section className="form my-4 mx-5 " style={{ opacity: 0.9 }}>
+      <section className="form my-4 mx-5" style={{ opacity: 0.9 }}>
         <div className="container">
           <div className="row no-gutters">
             <div className="col-lg-5">

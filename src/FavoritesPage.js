@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Card, Container, Row, Col, Button } from "react-bootstrap";
 import { removeFromFavorites, clear } from "./rtk/MyFav/favoritesSlice";
-import Cactus from "./assets/cactus";
+// import Cactus from "./assets/cactus";
 import "./MovieCards.css";
 import "./stylee.css";
 import Pagination from "react-bootstrap/Pagination";
@@ -37,8 +37,8 @@ function FavoritesPage() {
         {favorites.length === 0 ? (
           <>
             <div className="notfound">
-              <Cactus />
-              <h1>No favorites found :(</h1>
+              {/* <Cactus /> */}
+              <h1 style={{color:"white"}}>No favorites found :(</h1>
             </div>
           </>
         ) : (

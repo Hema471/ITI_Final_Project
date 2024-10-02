@@ -1,23 +1,20 @@
-.mainfooter{
-   
-    color: white;
-    padding: 20px;
-    text-align: start;
-
+.mainfooter {
+  color: white;
+  padding: 20px;
+  text-align: start;
 }
-.mangerfooter{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.mangerfooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-#inputvaled{
-    height: 25px;
+#inputvaled {
+  height: 25px;
 }
-#conbtn{
-    
+#conbtn {
 }
-.col_footer{
-    background: linear-gradient(90deg,hsl(192, 32%, 35%),hsl(120, 10%, 4%));
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
+.col_footer {
+  background: linear-gradient(90deg, hsl(192, 32%, 35%), hsl(120, 10%, 4%));
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
 }
