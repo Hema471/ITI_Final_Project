@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import MovieCards from "../MovieCards";
+import SearchCard from "../SearchCard";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Pagination from "react-bootstrap/Pagination";
@@ -151,11 +151,12 @@ const MovieSearch = () => {
       <div className="container_card">
         <div className="row">
           {moviesDetails.map((movieDetail, index) => (
-            <MovieCards
+            <SearchCard
               title={movieDetail.title.substring(0, 20) + "..."}
               imgSrc={movieDetail.poster_path}
               id={movieDetail.id}
               key={index}
+              genreId={movieDetail.genre_ids}
             />
           ))}
         </div>
