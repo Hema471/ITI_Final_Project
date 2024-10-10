@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import SearchCard from "../SearchCard";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Pagination from "react-bootstrap/Pagination";
 import "../Pagination.css";
 import "./Search.css";
+import { debounce } from "lodash";
+
 const apiKey = "7a1c19ea3c361a4d3cc53eb70ef8298c";
 const genreId = 16; // ID for animation
 
@@ -23,16 +25,12 @@ const MovieSearch = () => {
       recognition = new window.webkitSpeechRecognition();
       recognition.continuous = false;
       recognition.lang = "en-US";
-      // recognition.lang = "ar-SA";
-      // recognition.lang = "ar-EG";
-      recognition.onstart = () => {
-        setListening(true);
-      };
+      recognition.onstart = () => setListening(true);
 
       recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
         setQuery(transcript);
-        fetchMovies(transcript);
+        fetchMovies(transcript, 1); // Reset to page 1 on voice input
       };
 
       recognition.onerror = (event) => {
@@ -40,17 +38,9 @@ const MovieSearch = () => {
         setListening(false);
       };
 
-      recognition.onend = () => {
-        setListening(false);
-      };
+      recognition.onend = () => setListening(false);
 
       recognition.start();
-    };
-
-    const stopRecognition = () => {
-      if (recognition) {
-        recognition.stop();
-      }
     };
 
     if (listening) {
@@ -58,32 +48,39 @@ const MovieSearch = () => {
     }
 
     return () => {
-      stopRecognition();
+      if (recognition) recognition.stop();
     };
   }, [listening]);
+
+  // Debounced function to avoid excessive API calls
+  const debouncedFetchMovies = useCallback(
+    debounce((newQuery, newPage) => fetchMovies(newQuery, newPage), 500),
+    []
+  );
 
   const handleInputChange = (event) => {
     const newQuery = event.target.value;
     setQuery(newQuery);
-
-    if (newQuery) {
-      fetchMovies(newQuery);
-    } else {
-      setMoviesDetails([]);
-    }
+    setCurrentPage(1); // Reset to first page on new query
+    debouncedFetchMovies(newQuery, 1); // Fetch for page 1
   };
 
-  const fetchMovies = (newQuery) => {
-    const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${newQuery}&page=${currentPage}&with_genres=${genreId}`;
+  const fetchMovies = (newQuery, page) => {
+    if (!newQuery.trim()) {
+      setMoviesDetails([]);
+      return;
+    }
+
+    const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${newQuery}&page=${page}&with_genres=${genreId}`;
 
     axios
       .get(apiUrl)
       .then((response) => {
         const data = response.data;
-        if (data.results) {
+        if (data.results.length > 0) {
           setMoviesDetails(data.results);
-          setError(null);
           setTotalPages(data.total_pages);
+          setError(null);
         } else {
           setMoviesDetails([]);
           setError("No movies found.");
@@ -98,38 +95,31 @@ const MovieSearch = () => {
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
-      fetchMovies(query);
+      fetchMovies(query, newPage); // Pass current query and new page number
     }
   };
 
   const renderPageNumbers = () => {
     const pageNumbers = [];
-    const totalPagesToShow = Math.min(totalPages, 5);
-    const startPage = Math.max(
-      currentPage - Math.floor(totalPagesToShow / 2),
-      1
-    );
+    const totalPagesToShow = Math.min(totalPages, 5); // Show up to 5 pages at a time
+    const startPage = Math.max(currentPage - Math.floor(totalPagesToShow / 2), 1);
 
-    for (let i = startPage; i <= startPage + totalPagesToShow - 1; i++) {
-      if (i > 0 && i <= totalPages) {
-        pageNumbers.push(
-          <Pagination.Item
-            key={i}
-            active={i === currentPage}
-            onClick={() => handlePageChange(i)}
-          >
-            {i}
-          </Pagination.Item>
-        );
-      }
+    for (let i = startPage; i <= startPage + totalPagesToShow - 1 && i <= totalPages; i++) {
+      pageNumbers.push(
+        <Pagination.Item
+          key={i}
+          active={i === currentPage}
+          onClick={() => handlePageChange(i)}
+        >
+          {i}
+        </Pagination.Item>
+      );
     }
 
     return pageNumbers;
   };
 
-  const toggleRecognition = () => {
-    setListening(!listening);
-  };
+  const toggleRecognition = () => setListening((prevState) => !prevState);
 
   return (
     <div className="search-container">
@@ -147,12 +137,12 @@ const MovieSearch = () => {
         </button>
       </form>
       {listening && <p>Listening...</p>}
-      {error && <p>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
       <div className="container_card">
         <div className="row">
           {moviesDetails.map((movieDetail, index) => (
             <SearchCard
-              title={movieDetail.title.substring(0, 20) + "..."}
+              title={movieDetail.title.length > 20 ? movieDetail.title.substring(0, 20) + "..." : movieDetail.title}
               imgSrc={movieDetail.poster_path}
               id={movieDetail.id}
               key={index}
@@ -177,147 +167,3 @@ const MovieSearch = () => {
 };
 
 export default MovieSearch;
-
-// Always Listining
-
-// import React, { useState, useEffect } from "react";
-// import MovieCards from "../MovieCards";
-// import axios from "axios";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import Pagination from "react-bootstrap/Pagination";
-// import "../Pagination.css";
-// import "./Search.css";
-// const apiKey = "7a1c19ea3c361a4d3cc53eb70ef8298c";
-
-// const MovieSearch = () => {
-//   const [query, setQuery] = useState("");
-//   const [moviesDetails, setMoviesDetails] = useState([]);
-//   const [error, setError] = useState(null);
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const [totalPages, setTotalPages] = useState(1);
-
-//   useEffect(() => {
-//     const recognition = new window.webkitSpeechRecognition();
-//     recognition.continuous = false;
-//     recognition.lang = "en-US";
-//     // recognition.lang = "ar-EG";
-//     recognition.onresult = (event) => {
-//       const transcript = event.results[0][0].transcript;
-//       setQuery(transcript);
-//       fetchMovies(transcript);
-//     };
-
-//     recognition.onend = () => {
-//       recognition.start();
-//     };
-
-//     recognition.start();
-
-//     return () => {
-//       recognition.stop();
-//     };
-//   }, []);
-
-//   const handleInputChange = (event) => {
-//     const newQuery = event.target.value;
-//     setQuery(newQuery);
-
-//     if (newQuery) {
-//       fetchMovies(newQuery);
-//     } else {
-//       setMoviesDetails([]);
-//     }
-//   };
-
-//   const fetchMovies = (newQuery) => {
-//     const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${newQuery}&page=${currentPage}`;
-
-//     axios
-//       .get(apiUrl)
-//       .then((response) => {
-//         const data = response.data;
-//         if (data.results) {
-//           setMoviesDetails(data.results);
-//           setError(null);
-//           setTotalPages(data.total_pages);
-//         } else {
-//           setMoviesDetails([]);
-//           setError("No movies found.");
-//         }
-//       })
-//       .catch(() => {
-//         setMoviesDetails([]);
-//         setError("An error occurred while fetching data.");
-//       });
-//   };
-
-//   const handlePageChange = (newPage) => {
-//     if (newPage >= 1 && newPage <= totalPages) {
-//       setCurrentPage(newPage);
-//       fetchMovies(query);
-//     }
-//   };
-
-//   const renderPageNumbers = () => {
-//     const pageNumbers = [];
-//     const totalPagesToShow = Math.min(totalPages, 5);
-//     const startPage = Math.max(currentPage - Math.floor(totalPagesToShow / 2), 1);
-
-//     for (let i = startPage; i <= startPage + totalPagesToShow - 1; i++) {
-//       if (i > 0 && i <= totalPages) {
-//         pageNumbers.push(
-//           <Pagination.Item
-//             key={i}
-//             active={i === currentPage}
-//             onClick={() => handlePageChange(i)}
-//           >
-//             {i}
-//           </Pagination.Item>
-//         );
-//       }
-//     }
-
-//     return pageNumbers;
-//   };
-
-//   return (
-//     <div className="search-container">
-//       <h1>Movie Search</h1>
-//       <form onSubmit={(event) => event.preventDefault()}>
-//         <input
-//           type="text"
-//           placeholder="Search for a movie..."
-//           value={query}
-//           onChange={handleInputChange}
-//           className="search-input"
-//         />
-//       </form>
-//       {error && <p>{error}</p>}
-//       <div className="container_card">
-//         <div className="row">
-//           {moviesDetails.map((movieDetail, index) => (
-//             <MovieCards
-//               title={movieDetail.title.substring(0, 20) + "..."}
-//               imgSrc={movieDetail.poster_path}
-//               id={movieDetail.id}
-//               key={index}
-//             />
-//           ))}
-//         </div>
-//       </div>
-//       <Pagination className="custom-pagination" style={{ padding: "7px" }}>
-//         <Pagination.Prev
-//           onClick={() => handlePageChange(currentPage - 1)}
-//           disabled={currentPage === 1}
-//         />
-//         {renderPageNumbers()}
-//         <Pagination.Next
-//           onClick={() => handlePageChange(currentPage + 1)}
-//           disabled={currentPage === totalPages}
-//         />
-//       </Pagination>
-//     </div>
-//   );
-// };
-
-// export default MovieSearch;

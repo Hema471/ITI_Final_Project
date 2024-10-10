@@ -5,7 +5,6 @@ import {
   addToFavorites,
   removeFromFavorites,
 } from "./rtk/MyFav/favoritesSlice";
-
 import "./MovieCards.css";
 import "./stylee.css";
 

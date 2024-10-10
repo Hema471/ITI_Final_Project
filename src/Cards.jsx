@@ -67,7 +67,11 @@ const Cards = () => {
         <div className="row">
           {moviesDetails.map((moviesDetail, index) => (
             <MovieCards
-              title={moviesDetail.title.substring(0, 20) + "..."} // Truncate title here
+              title={
+                moviesDetail.title.length > 20
+                  ? moviesDetail.title.substring(0, 20) + "..."
+                  : moviesDetail.title
+              }
               imgSrc={moviesDetail.poster_path}
               id={moviesDetail.id}
               key={index}
