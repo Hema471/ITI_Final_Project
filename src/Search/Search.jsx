@@ -102,9 +102,16 @@ const MovieSearch = () => {
   const renderPageNumbers = () => {
     const pageNumbers = [];
     const totalPagesToShow = Math.min(totalPages, 5); // Show up to 5 pages at a time
-    const startPage = Math.max(currentPage - Math.floor(totalPagesToShow / 2), 1);
+    const startPage = Math.max(
+      currentPage - Math.floor(totalPagesToShow / 2),
+      1
+    );
 
-    for (let i = startPage; i <= startPage + totalPagesToShow - 1 && i <= totalPages; i++) {
+    for (
+      let i = startPage;
+      i <= startPage + totalPagesToShow - 1 && i <= totalPages;
+      i++
+    ) {
       pageNumbers.push(
         <Pagination.Item
           key={i}
@@ -122,47 +129,53 @@ const MovieSearch = () => {
   const toggleRecognition = () => setListening((prevState) => !prevState);
 
   return (
-    <div className="search-container">
-      <h1>Movie Search</h1>
-      <form onSubmit={(event) => event.preventDefault()}>
-        <input
-          type="text"
-          placeholder="Search for a movie..."
-          value={query}
-          onChange={handleInputChange}
-          className="search-input"
-        />
-        <button className="voice-button" onClick={toggleRecognition}>
-          {listening ? "Stop Listening" : "Start Listening"}
-        </button>
-      </form>
-      {listening && <p>Listening...</p>}
-      {error && <p className="error-message">{error}</p>}
-      <div className="container_card">
-        <div className="row">
-          {moviesDetails.map((movieDetail, index) => (
-            <SearchCard
-              title={movieDetail.title.length > 20 ? movieDetail.title.substring(0, 20) + "..." : movieDetail.title}
-              imgSrc={movieDetail.poster_path}
-              id={movieDetail.id}
-              key={index}
-              genreId={movieDetail.genre_ids}
-            />
-          ))}
+    <section>
+      <div className="search-container">
+        <h1>Movie Search</h1>
+        <form onSubmit={(event) => event.preventDefault()}>
+          <input
+            type="text"
+            placeholder="Search for a movie..."
+            value={query}
+            onChange={handleInputChange}
+            className="search-input"
+          />
+          <button className="voice-button" onClick={toggleRecognition}>
+            {listening ? "Stop Listening" : "Start Listening"}
+          </button>
+        </form>
+        {listening && <p>Listening...</p>}
+        {error && <p className="error-message">{error}</p>}
+        <div className="container_card">
+          <div className="row">
+            {moviesDetails.map((movieDetail, index) => (
+              <SearchCard
+                title={
+                  movieDetail.title.length > 20
+                    ? movieDetail.title.substring(0, 20) + "..."
+                    : movieDetail.title
+                }
+                imgSrc={movieDetail.poster_path}
+                id={movieDetail.id}
+                key={index}
+                genreId={movieDetail.genre_ids}
+              />
+            ))}
+          </div>
         </div>
+        <Pagination className="custom-pagination" style={{ padding: "7px" }}>
+          <Pagination.Prev
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          />
+          {renderPageNumbers()}
+          <Pagination.Next
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          />
+        </Pagination>
       </div>
-      <Pagination className="custom-pagination" style={{ padding: "7px" }}>
-        <Pagination.Prev
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-        />
-        {renderPageNumbers()}
-        <Pagination.Next
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        />
-      </Pagination>
-    </div>
+    </section>
   );
 };
 

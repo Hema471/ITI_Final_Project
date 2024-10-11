@@ -5,6 +5,7 @@ import {Provider} from "react-redux";
 import store from "./store";
 import ScrollUpButton from './ScrollUp/ScrollUp';
 import '@fortawesome/fontawesome-free/css/all.min.css'
+import Footer from './Footer/Footer';
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <>
